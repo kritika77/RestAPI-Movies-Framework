@@ -1,0 +1,9 @@
+<suite name="splunkMovieAPITesting">
+ <test name="testngTest">
+   <classes>
+    <class name="com.splunk.test.GetAPITest"/>
+    <class name="com.splunk.test.PostAPITest"/>
+    <class name="com.splunk.test.SplunkAPITest"/>
+   </classes>
+ </test>
+</suite>
