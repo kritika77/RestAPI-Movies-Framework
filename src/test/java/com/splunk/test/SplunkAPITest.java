@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.http.HttpHeaders;
@@ -20,30 +22,21 @@ import com.splunk.base.TestBase;
 import com.splunk.client.RestClient;
 
 public class SplunkAPITest extends TestBase{
+
 	TestBase testBase;
 	boolean flag;
 	RestClient restClient;
 	CloseableHttpResponse closeableHttpResponse;
-	String getUrl = prop.getProperty("getURL");
+	String getUrl = testSuiteProperties.getProperty("getURL");
 	
-	@Test(priority=1)
-	public void print() throws ClientProtocolException, IOException{
-		System.out.println("Test TestNG");
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpGet httpGet = new HttpGet(getUrl); //http get request
-		httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
-		httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-		CloseableHttpResponse response = httpClient.execute(httpGet); //hit the get url 
-		int statusCode = response.getStatusLine().getStatusCode();
-		Assert.assertEquals(statusCode, 200);
-		System.out.println(statusCode);
-		String contentString = EntityUtils.toString(response.getEntity(), "UTF-8");
-		JSONObject responseJson = new JSONObject(contentString);
-		System.out.println(responseJson + ",\n");
+	//Constructor
+	public SplunkAPITest() throws FileNotFoundException {
+		super();
 	}
 
-	
-	@Test(priority=2)
+
+	//SPL-001: No two movies should have the same image
+	@Test(priority=1)
 	public void isSameMovieImage(){
 		flag = true;
 		try {
@@ -69,7 +62,8 @@ public class SplunkAPITest extends TestBase{
 		Assert.assertEquals(flag, true);
 	}
 	
-	@Test(priority=3)
+	//SPL-002: All poster_path links must be valid. poster_path link of null is also acceptable
+	@Test(priority=2)
 	public void isValidLink(){
 		HttpURLConnection httpUrlConn;
 		flag = true;
@@ -102,22 +96,20 @@ public class SplunkAPITest extends TestBase{
         Assert.assertEquals(flag, true);
 	}
 	
+	//Gets API Response and returns the JSON response data
 	private JSONObject getAPIResponse() throws ClientProtocolException, IOException{
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(getUrl); //http get request
 		httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
 		httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 		CloseableHttpResponse response = httpClient.execute(httpGet); //hit the get url 
-		int statusCode = response.getStatusLine().getStatusCode();
-		//Assert.assertEquals(statusCode, 200);
-		System.out.println(statusCode);
+		//int statusCode = response.getStatusLine().getStatusCode();
 		String contentString = EntityUtils.toString(response.getEntity(), "UTF-8");
 		JSONObject responseJson = new JSONObject(contentString);
-		System.out.println(responseJson + ",\n");
 		return responseJson;
 	}
 		
-    
+    //Check if the genre ids are sorted
 	private boolean isSorted() throws ClientProtocolException, IOException{
 		JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
@@ -140,13 +132,18 @@ public class SplunkAPITest extends TestBase{
 		return true;
 	}
     
-	@Test(priority=4)
+	//SPL-003: Sorting requirement. Rule #1 Movies with genre_ids == null should be first in response. 
+	//Rule #2, if multiple movies have genre_ids == null, then sort by id (ascending). 
+	//For movies that have non-null genre_ids, results should be sorted by id (ascending)
+	@Test(priority=3)
     public void sortedGenreIds() throws ClientProtocolException, IOException{
     	boolean value = isSorted();
     	Assert.assertEquals(value, false);
     }
     
-	@Test(priority=5)
+	//SPL-004: The number of movies whose sum of "genre_ids" > 400 should be no more than 7. 
+	//Another way of saying this is: there at most 7 movies such that their sum of genre_ids is great than 400
+	@Test(priority=4)
     public void isAtMostSeven() throws ClientProtocolException, IOException{
 		JSONObject responsePosterPath = getAPIResponse();
 		flag = true;
@@ -172,8 +169,10 @@ public class SplunkAPITest extends TestBase{
 		 
 		Assert.assertEquals(flag, true);
 	}
-    
-    @Test(priority=6)
+   
+	//SPL-005: There is at least one movie in the database whose title has a palindrome in it. 
+	//Example: "title": "Batman: Return of the Kayak Crusaders". The title contains ‘kayak’ which is a palindrome
+   @Test(priority=5)
    public void hasPalindrome() throws ClientProtocolException, IOException{
 	    JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
@@ -198,7 +197,10 @@ public class SplunkAPITest extends TestBase{
 		Assert.assertEquals(flag, true);
 	}
    
-   @Test(priority=7)
+   //SPL-006: There are at least two movies in the database whose title contain the title of another movie. 
+   //Example: movie id: 287757 (Scooby-Doo Meets Dante), movie id: 404463 (Dante). 
+   //This example shows one such set. The business requirement is that there are at least two such occurrences.
+   @Test(priority=6)
    public void titleContainsTitle() throws ClientProtocolException, IOException{
 	    JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
@@ -210,7 +212,6 @@ public class SplunkAPITest extends TestBase{
 				 String title2 = array.getJSONObject(j).getString("title");
 				 if(title1.toLowerCase().contains(title2.toLowerCase())){
 					 count++;
-					 System.out.println(title1 + title2);
 				 }
 		       }
             }
@@ -224,7 +225,7 @@ public class SplunkAPITest extends TestBase{
 		Assert.assertEquals(flag, true);
 	}
    
-   
+   //Check if the title is palindrome and returns boolean value
    private boolean isPalindrome(String title){
 	   if(title == null || title.length() == 0) 
            return true;

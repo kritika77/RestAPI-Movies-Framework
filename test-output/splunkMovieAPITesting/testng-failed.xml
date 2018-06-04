@@ -3,22 +3,22 @@
 <suite name="Failed suite [splunkMovieAPITesting]">
   <test name="testngTest(failed)">
     <classes>
-      <class name="com.splunk.test.PostAPITest">
+      <class name="com.splunk.test.GetAPITest">
         <methods>
-          <include name="postAPITest"/>
           <include name="setUp"/>
         </methods>
-      </class> <!-- com.splunk.test.PostAPITest -->
+      </class> <!-- com.splunk.test.GetAPITest -->
       <class name="com.splunk.test.SplunkAPITest">
         <methods>
           <include name="isValidLink"/>
-          <include name="isAtMostSeven"/>
           <include name="isSameMovieImage"/>
-          <include name="sortedGenreIds"/>
-          <include name="hasPalindrome"/>
-          <include name="titleContainsTitle"/>
         </methods>
       </class> <!-- com.splunk.test.SplunkAPITest -->
+      <class name="com.splunk.test.PostAPITest">
+        <methods>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- com.splunk.test.PostAPITest -->
     </classes>
   </test> <!-- testngTest(failed) -->
 </suite> <!-- Failed suite [splunkMovieAPITesting] -->

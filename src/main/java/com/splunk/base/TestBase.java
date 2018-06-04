@@ -1,8 +1,8 @@
 package com.splunk.base;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class TestBase {
@@ -13,28 +13,17 @@ public class TestBase {
 	public int RESPONSE_STATUS_CODE_401 = 401;
 	public int RESPONSE_STATUS_CODE_201 = 201;
     
-	public Properties prop;
+	public Properties testSuiteProperties;
+	public final static String DATA_PATH = "./src/test/resources/properties";
       
-    public TestBase(){
-    	InputStream inputStream;
-    	Properties prop = new Properties();
-		String propFileName = "config.properties";
+    public TestBase() throws FileNotFoundException{
+    	    testSuiteProperties = new Properties();
 
-		inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
-		if (inputStream != null) {
+			FileInputStream fFileInputStream = new FileInputStream(DATA_PATH + "//config.properties");
 			try {
-				prop.load(inputStream);
-			} catch (IOException e) {
-				e.printStackTrace();
+				testSuiteProperties.load(fFileInputStream);
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-		} else {
-			try {
-				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-	   
     }
 }

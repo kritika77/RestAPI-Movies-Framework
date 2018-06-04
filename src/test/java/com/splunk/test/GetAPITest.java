@@ -1,5 +1,6 @@
 package com.splunk.test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.ClientProtocolException;
@@ -22,13 +23,18 @@ public class GetAPITest extends TestBase{
 	RestClient restClient;
 	CloseableHttpResponse closeableHttpResponse;
 	
+	//Constuctor
+	public GetAPITest() throws FileNotFoundException {
+		super();
+	}
 	
 	@BeforeMethod
 	public void setUp() throws ClientProtocolException, IOException{
 		testBase = new TestBase();
-		getUrl = prop.getProperty("getURL");
+		getUrl = testSuiteProperties.getProperty("getURL");
 	}
 	
+	//Gets the response from the movie api
 	@Test
 	public void getAPITest() throws ClientProtocolException, IOException{
 		restClient = new RestClient();
