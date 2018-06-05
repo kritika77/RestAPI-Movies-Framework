@@ -5,8 +5,8 @@
     <classes>
       <class name="com.splunk.test.SplunkAPITest">
         <methods>
-          <include name="isValidLink"/>
-          <include name="isSameMovieImage"/>
+          <include name="sortedGenreIds"/>
+          <include name="sameMovieImage"/>
         </methods>
       </class> <!-- com.splunk.test.SplunkAPITest -->
     </classes>

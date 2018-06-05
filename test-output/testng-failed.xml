@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [splunkMovieAPITesting]">
-  <test name="testngTest(failed)">
+<suite name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
     <classes>
-      <class name="com.splunk.test.GetAPITest">
-        <methods>
-          <include name="setUp"/>
-        </methods>
-      </class> <!-- com.splunk.test.GetAPITest -->
       <class name="com.splunk.test.SplunkAPITest">
         <methods>
-          <include name="isValidLink"/>
-          <include name="isSameMovieImage"/>
+          <include name="sortedGenreIds"/>
+          <include name="sameMovieImage"/>
         </methods>
       </class> <!-- com.splunk.test.SplunkAPITest -->
-      <class name="com.splunk.test.PostAPITest">
-        <methods>
-          <include name="setUp"/>
-        </methods>
-      </class> <!-- com.splunk.test.PostAPITest -->
     </classes>
-  </test> <!-- testngTest(failed) -->
-</suite> <!-- Failed suite [splunkMovieAPITesting] -->
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

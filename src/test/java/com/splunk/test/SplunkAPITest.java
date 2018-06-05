@@ -33,12 +33,57 @@ public class SplunkAPITest extends TestBase{
 	public SplunkAPITest() throws FileNotFoundException {
 		super();
 	}
-
-
+   
 	//SPL-001: No two movies should have the same image
 	@Test(priority=1)
-	public void isSameMovieImage(){
-		flag = true;
+	public void sameMovieImage(){
+		boolean value = isSameMovieImage();
+    	Assert.assertEquals(value, true);
+	}
+	
+	//SPL-002: All poster_path links must be valid. poster_path link of null is also acceptable
+	@Test(priority=2)
+	public void validLink() throws ClientProtocolException, IOException{
+		 boolean value = isValidLink();
+		 Assert.assertEquals(value, true);
+	}
+	
+	//SPL-003: Sorting requirement. Rule #1 Movies with genre_ids == null should be first in response. 
+	//Rule #2, if multiple movies have genre_ids == null, then sort by id (ascending). 
+	//For movies that have non-null genre_ids, results should be sorted by id (ascending)
+	@Test(priority=3)
+	public void sortedGenreIds() throws ClientProtocolException, IOException{
+	    boolean value = isSorted();
+	    Assert.assertEquals(value, true);
+	 }
+	
+	//SPL-004: The number of movies whose sum of "genre_ids" > 400 should be no more than 7. 
+  	//Another way of saying this is: there at most 7 movies such that their sum of genre_ids is great than 400
+	@Test(priority=4)
+    public void atMostSeven() throws ClientProtocolException, IOException{
+		boolean value = isAtMostSeven();
+    	Assert.assertEquals(value, true);
+	}
+	
+	//SPL-005: There is at least one movie in the database whose title has a palindrome in it. 
+	//Example: "title": "Batman: Return of the Kayak Crusaders". The title contains ‘kayak’ which is a palindrome
+	@Test(priority=5)
+	public void conatinsPalindrome() throws ClientProtocolException, IOException{
+		 boolean value = hasPalindrome();
+	   	 Assert.assertEquals(value, true);
+	}
+	
+	//SPL-006: There are at least two movies in the database whose title contain the title of another movie. 
+	//Example: movie id: 287757 (Scooby-Doo Meets Dante), movie id: 404463 (Dante). 
+	//This example shows one such set. The business requirement is that there are at least two such occurrences.
+	@Test(priority=6)
+	public void alLeastTwoContainsTitleUnderTitle() throws ClientProtocolException, IOException{
+		 boolean value = titleContainsTitle();
+	   	 Assert.assertEquals(value, true);
+	 }
+
+	// Check if two movie images are same
+	private boolean isSameMovieImage(){
 		try {
 			JSONObject responseImage = getAPIResponse();
 			HashMap<String, Integer> hmap = new HashMap<String, Integer>();
@@ -48,8 +93,7 @@ public class SplunkAPITest extends TestBase{
 				 if(!hmap.containsKey(array.getJSONObject(i).getString("poster_path"))){
 					 hmap.put(array.getJSONObject(i).getString("poster_path"), 1);
 				 }else{
-					 flag = false;
-					 Assert.assertEquals(flag, false);
+					 return false;
 				 }
 			  }
 			 }
@@ -59,14 +103,12 @@ public class SplunkAPITest extends TestBase{
 			e.printStackTrace();
 		}
 		
-		Assert.assertEquals(flag, true);
+		return true;
 	}
 	
-	//SPL-002: All poster_path links must be valid. poster_path link of null is also acceptable
-	@Test(priority=2)
-	public void isValidLink(){
+	// Check if all the poster path links are valid
+	private boolean isValidLink(){
 		HttpURLConnection httpUrlConn;
-		flag = true;
         try {
         JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
@@ -82,19 +124,19 @@ public class SplunkAPITest extends TestBase{
             httpUrlConn.setConnectTimeout(30000);
             httpUrlConn.setReadTimeout(30000);
  
-            if (httpUrlConn.getResponseCode() != 200){
-            	flag = false; 
-            	Assert.assertEquals(flag, false);
+            if (httpUrlConn.getResponseCode() == 200){
+            	return true;
             }
           }
 		 }
         }catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            Assert.assertEquals(flag, false);
+            return false;
         }
         
-        Assert.assertEquals(flag, true);
+        return false;
 	}
+	
 	
 	//Gets API Response and returns the JSON response data
 	private JSONObject getAPIResponse() throws ClientProtocolException, IOException{
@@ -132,21 +174,10 @@ public class SplunkAPITest extends TestBase{
 		return true;
 	}
     
-	//SPL-003: Sorting requirement. Rule #1 Movies with genre_ids == null should be first in response. 
-	//Rule #2, if multiple movies have genre_ids == null, then sort by id (ascending). 
-	//For movies that have non-null genre_ids, results should be sorted by id (ascending)
-	@Test(priority=3)
-    public void sortedGenreIds() throws ClientProtocolException, IOException{
-    	boolean value = isSorted();
-    	Assert.assertEquals(value, false);
-    }
-    
-	//SPL-004: The number of movies whose sum of "genre_ids" > 400 should be no more than 7. 
-	//Another way of saying this is: there at most 7 movies such that their sum of genre_ids is great than 400
-	@Test(priority=4)
-    public void isAtMostSeven() throws ClientProtocolException, IOException{
+	
+	// check if there are at most 7 movies with sum greater than 400
+    private boolean isAtMostSeven() throws ClientProtocolException, IOException{
 		JSONObject responsePosterPath = getAPIResponse();
-		flag = true;
 		JSONArray array = responsePosterPath.getJSONArray("results");
 		int count = 0;
 		for(int i = 0 ; i < array.length() ; i++){
@@ -163,17 +194,14 @@ public class SplunkAPITest extends TestBase{
 		}
 		
 		if(count > 7){
-			flag = false;
-			Assert.assertEquals(flag, false);
+			return false;
 		}
 		 
-		Assert.assertEquals(flag, true);
+		return true;
 	}
-   
-	//SPL-005: There is at least one movie in the database whose title has a palindrome in it. 
-	//Example: "title": "Batman: Return of the Kayak Crusaders". The title contains ‘kayak’ which is a palindrome
-   @Test(priority=5)
-   public void hasPalindrome() throws ClientProtocolException, IOException{
+	
+   //Check if atleast one movie title has palindrome
+   private boolean hasPalindrome() throws ClientProtocolException, IOException{
 	    JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
 		int count = 0;
@@ -190,18 +218,14 @@ public class SplunkAPITest extends TestBase{
 		}
 		
 		if(count < 1){
-			flag = false;
-			Assert.assertEquals(flag, false);
+			return false;
 		}
 		 
-		Assert.assertEquals(flag, true);
+		return true;
 	}
    
-   //SPL-006: There are at least two movies in the database whose title contain the title of another movie. 
-   //Example: movie id: 287757 (Scooby-Doo Meets Dante), movie id: 404463 (Dante). 
-   //This example shows one such set. The business requirement is that there are at least two such occurrences.
-   @Test(priority=6)
-   public void titleContainsTitle() throws ClientProtocolException, IOException{
+  // Check if atleast two movies contains title inside a title
+   private boolean titleContainsTitle() throws ClientProtocolException, IOException{
 	    JSONObject responsePosterPath = getAPIResponse();
 		JSONArray array = responsePosterPath.getJSONArray("results");
 		int count = 0;
@@ -218,11 +242,10 @@ public class SplunkAPITest extends TestBase{
 		}
 		
 		if(count < 2){
-			flag = false;
-			Assert.assertEquals(flag, false);
+			return false;
 		}
 		 
-		Assert.assertEquals(flag, true);
+		return true;
 	}
    
    //Check if the title is palindrome and returns boolean value

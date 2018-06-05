@@ -1,33 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="2" total="8" passed="6">
+<testng-results skipped="0" failed="2" total="6" passed="4">
   <reporter-output>
   </reporter-output>
-  <suite name="splunkMovieAPITesting" duration-ms="9796" started-at="2018-06-04T15:34:37Z" finished-at="2018-06-04T15:34:47Z">
+  <suite name="Default suite" duration-ms="3960" started-at="2018-06-05T15:52:28Z" finished-at="2018-06-05T15:52:32Z">
     <groups>
     </groups>
-    <test name="testngTest" duration-ms="9796" started-at="2018-06-04T15:34:37Z" finished-at="2018-06-04T15:34:47Z">
-      <class name="com.splunk.test.PostAPITest">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:com.splunk.test.PostAPITest@6767c1fc]" name="setUp" is-config="true" duration-ms="0" started-at="2018-06-04T08:34:38Z" finished-at="2018-06-04T08:34:38Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="postAPITest()[pri:0, instance:com.splunk.test.PostAPITest@6767c1fc]" name="postAPITest" duration-ms="382" started-at="2018-06-04T08:34:38Z" finished-at="2018-06-04T08:34:38Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- postAPITest -->
-      </class> <!-- com.splunk.test.PostAPITest -->
-      <class name="com.splunk.test.GetAPITest">
-        <test-method status="PASS" signature="setUp()[pri:0, instance:com.splunk.test.GetAPITest@2a5ca609]" name="setUp" is-config="true" duration-ms="9" started-at="2018-06-04T08:34:37Z" finished-at="2018-06-04T08:34:37Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="getAPITest()[pri:0, instance:com.splunk.test.GetAPITest@2a5ca609]" name="getAPITest" duration-ms="997" started-at="2018-06-04T08:34:37Z" finished-at="2018-06-04T08:34:38Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getAPITest -->
-      </class> <!-- com.splunk.test.GetAPITest -->
+    <test name="Default test" duration-ms="3960" started-at="2018-06-05T15:52:28Z" finished-at="2018-06-05T15:52:32Z">
       <class name="com.splunk.test.SplunkAPITest">
-        <test-method status="FAIL" signature="isSameMovieImage()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="isSameMovieImage" duration-ms="371" started-at="2018-06-04T08:34:38Z" finished-at="2018-06-04T08:34:39Z">
+        <test-method status="FAIL" signature="sameMovieImage()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="sameMovieImage" duration-ms="1043" started-at="2018-06-05T08:52:28Z" finished-at="2018-06-05T08:52:29Z">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[expected [true] but found [false]]]>
@@ -39,7 +19,7 @@
 	at org.testng.Assert.assertEquals(Assert.java:123)
 	at org.testng.Assert.assertEquals(Assert.java:286)
 	at org.testng.Assert.assertEquals(Assert.java:296)
-	at com.splunk.test.SplunkAPITest.isSameMovieImage(SplunkAPITest.java:62)
+	at com.splunk.test.SplunkAPITest.sameMovieImage(SplunkAPITest.java:41)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -69,20 +49,24 @@
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- isSameMovieImage -->
-        <test-method status="FAIL" signature="isValidLink()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="isValidLink" duration-ms="6545" started-at="2018-06-04T08:34:39Z" finished-at="2018-06-04T08:34:45Z">
+        </test-method> <!-- sameMovieImage -->
+        <test-method status="PASS" signature="validLink()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="validLink" duration-ms="1392" started-at="2018-06-05T08:52:29Z" finished-at="2018-06-05T08:52:30Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- validLink -->
+        <test-method status="FAIL" signature="sortedGenreIds()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="sortedGenreIds" duration-ms="372" started-at="2018-06-05T08:52:30Z" finished-at="2018-06-05T08:52:30Z">
           <exception class="java.lang.AssertionError">
             <message>
-              <![CDATA[expected [false] but found [true]]]>
+              <![CDATA[expected [true] but found [false]]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: expected [false] but found [true]
+              <![CDATA[java.lang.AssertionError: expected [true] but found [false]
 	at org.testng.Assert.fail(Assert.java:94)
 	at org.testng.Assert.failNotEquals(Assert.java:494)
 	at org.testng.Assert.assertEquals(Assert.java:123)
 	at org.testng.Assert.assertEquals(Assert.java:286)
 	at org.testng.Assert.assertEquals(Assert.java:296)
-	at com.splunk.test.SplunkAPITest.isValidLink(SplunkAPITest.java:93)
+	at com.splunk.test.SplunkAPITest.sortedGenreIds(SplunkAPITest.java:57)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -112,24 +96,20 @@
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- isValidLink -->
-        <test-method status="PASS" signature="sortedGenreIds()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="sortedGenreIds" duration-ms="364" started-at="2018-06-04T08:34:45Z" finished-at="2018-06-04T08:34:46Z">
-          <reporter-output>
-          </reporter-output>
         </test-method> <!-- sortedGenreIds -->
-        <test-method status="PASS" signature="isAtMostSeven()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="isAtMostSeven" duration-ms="363" started-at="2018-06-04T08:34:46Z" finished-at="2018-06-04T08:34:46Z">
+        <test-method status="PASS" signature="atMostSeven()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="atMostSeven" duration-ms="373" started-at="2018-06-05T08:52:30Z" finished-at="2018-06-05T08:52:31Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- isAtMostSeven -->
-        <test-method status="PASS" signature="hasPalindrome()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="hasPalindrome" duration-ms="362" started-at="2018-06-04T08:34:46Z" finished-at="2018-06-04T08:34:46Z">
+        </test-method> <!-- atMostSeven -->
+        <test-method status="PASS" signature="conatinsPalindrome()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="conatinsPalindrome" duration-ms="381" started-at="2018-06-05T08:52:31Z" finished-at="2018-06-05T08:52:31Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- hasPalindrome -->
-        <test-method status="PASS" signature="titleContainsTitle()[pri:0, instance:com.splunk.test.SplunkAPITest@c038203]" name="titleContainsTitle" duration-ms="365" started-at="2018-06-04T08:34:46Z" finished-at="2018-06-04T08:34:47Z">
+        </test-method> <!-- conatinsPalindrome -->
+        <test-method status="PASS" signature="alLeastTwoContainsTitleUnderTitle()[pri:0, instance:com.splunk.test.SplunkAPITest@643b1d11]" name="alLeastTwoContainsTitleUnderTitle" duration-ms="368" started-at="2018-06-05T08:52:31Z" finished-at="2018-06-05T08:52:32Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- titleContainsTitle -->
+        </test-method> <!-- alLeastTwoContainsTitleUnderTitle -->
       </class> <!-- com.splunk.test.SplunkAPITest -->
-    </test> <!-- testngTest -->
-  </suite> <!-- splunkMovieAPITesting -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
 </testng-results>
