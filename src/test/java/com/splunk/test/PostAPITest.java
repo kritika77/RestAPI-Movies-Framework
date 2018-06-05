@@ -23,7 +23,6 @@ public class PostAPITest extends TestBase {
 	String postUrl;
 	RestClient restClient;
 	CloseableHttpResponse closebaleHttpResponse;
-	public final static String DATA_PATH = "./src/test/resources/data";
 	
 	//Constuctor
 	public PostAPITest() throws FileNotFoundException {
